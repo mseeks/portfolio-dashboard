@@ -65,7 +65,7 @@ export default {
 
       let data = this.historicals;
       data.forEach(function(d) {
-        d.begins_at = parseDate(d.begins_at);
+        d.begins_at = d3.time.format.utc("%Y-%m-%dT%H:%M:%SZ").parse(d.begins_at);
         d.adjusted_close_equity = parseFloat(d.adjusted_close_equity);
       });
 
@@ -98,6 +98,7 @@ export default {
 
       //initialize axis
       let xAxis = d3.svg.axis().orient('bottom');
+
       let yAxis = d3.svg.axis().orient('left').tickPadding(5).innerTickSize(-width).outerTickSize(0).tickFormat(formatValue);
 
       //update x and y scales to new dimensions
