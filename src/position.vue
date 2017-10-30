@@ -33,6 +33,7 @@ export default {
   name: 'position',
   data() {
     return {
+      holding_value: 0.0,
       shared: store.state
     };
   },
@@ -52,7 +53,7 @@ export default {
       return Math.round(result * 100) / 100;
     },
     formatted_holding_value() {
-      let value = this.position.holding_value;
+      let value = this.holding_value;
 
       return currency_formatter.format(value);
     },
@@ -67,11 +68,11 @@ export default {
       return Math.round(this.position.quantity);
     },
     percent_allocation() {
-      let result = (this.position.holding_value / this.shared.raw_portfolio_value) * 100;
+      let result = (this.holding_value / this.shared.raw_portfolio_value) * 100;
       return Math.round(result * 100) / 100;
     },
     simple_percent_allocation() {
-      let result = Math.round((this.position.holding_value / this.shared.raw_portfolio_value) * 10);
+      let result = Math.round((this.holding_value / this.shared.raw_portfolio_value) * 10);
 
       if (result == 0) {
         result++;
@@ -85,6 +86,24 @@ export default {
         is_medium: (this.simple_percent_allocation <= 3 && this.simple_percent_allocation > 2 ),
         is_low: (this.simple_percent_allocation <= 2)
       };
+    }
+  },
+  watch: {
+    position: function(newValue, oldValue) {
+      var vm = this
+      function animate () {
+        if (TWEEN.update()) {
+          requestAnimationFrame(animate)
+        }
+      }
+      new TWEEN.Tween({ tweeningNumber: oldValue.holding_value })
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .to({ tweeningNumber: newValue.holding_value }, 250)
+        .onUpdate(function () {
+          vm.holding_value = this.tweeningNumber
+        })
+        .start()
+      animate()
     }
   },
   props: ['position']
