@@ -71,7 +71,7 @@ export default {
   },
   methods: {
     fetch_data() {
-      axios.get('http://192.168.99.100/portfolio').then(response => {
+      axios.get('https://apps.msull92.com/data/portfolio/portfolio').then(response => {
         this.raw_portfolio_value = response.data.portfolio_value;
       });
     }

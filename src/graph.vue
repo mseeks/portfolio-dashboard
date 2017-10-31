@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     fetch_data() {
-      axios.get('http://192.168.99.100/graph/' + this.shared.equity + '/' + this.shared.period).then(response => {
+      axios.get('https://apps.msull92.com/data/portfolio/graph/' + this.shared.equity + '/' + this.shared.period).then(response => {
         this.raw_portfolio_change = response.data.current_return;
         this.historicals = response.data.historicals;
       });
