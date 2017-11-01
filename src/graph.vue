@@ -27,9 +27,9 @@ export default {
   },
   methods: {
     fetch_data() {
-      axios.get('https://apps.msull92.com/data/portfolio/graph/' + this.shared.equity + '/' + this.shared.period).then(response => {
-        this.raw_portfolio_change = response.data.current_return;
-        this.historicals = response.data.historicals;
+      $.get('https://apps.msull92.com/data/portfolio/graph/' + this.shared.equity + '/' + this.shared.period, response => {
+        this.raw_portfolio_change = response.current_return;
+        this.historicals = response.historicals;
       });
     },
     setup_graph() {

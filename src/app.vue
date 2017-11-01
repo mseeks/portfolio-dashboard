@@ -71,8 +71,8 @@ export default {
   },
   methods: {
     fetch_data() {
-      axios.get('https://apps.msull92.com/data/portfolio/portfolio').then(response => {
-        this.raw_portfolio_value = response.data.portfolio_value;
+      $.get('https://apps.msull92.com/data/portfolio/portfolio', response => {
+        this.raw_portfolio_value = response.portfolio_value;
       });
     }
   },

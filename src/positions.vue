@@ -35,8 +35,8 @@ export default {
   },
   methods: {
     fetch_data() {
-      axios.get('https://apps.msull92.com/data/portfolio/positions').then(response => {
-        this.positions = response.data.positions;
+      $.get('https://apps.msull92.com/data/portfolio/positions', response => {
+        this.positions = response.positions;
       });
     }
   },
