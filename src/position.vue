@@ -118,11 +118,11 @@ ul#positions li {
 
   .context,
   .holding {
-    width: 40%;
+    width: 42.5%;
   }
 
   .quantity {
-    width: 20%;
+    width: 15%;
   }
 
   .context {

@@ -30,6 +30,9 @@ export default {
       $.get('https://apps.msull92.com/data/portfolio/graph/' + this.shared.equity + '/' + this.shared.period, response => {
         this.raw_portfolio_change = response.current_return;
         this.historicals = response.historicals;
+        this.shared.portfolio_historical_values = response.historicals.map(function(x) {
+          return x.adjusted_close_equity;
+        });;
       });
     },
     setup_graph() {
@@ -124,7 +127,10 @@ export default {
   watch: {
     historicals: "render",
     '$route' (to, from) {
-      this.shared.period = to.params.period;
+      if (to.params.period != null) {
+        this.shared.period = to.params.period;
+      }
+
       this.fetch_data();
     },
     raw_portfolio_change: function(newValue, oldValue) {
@@ -145,8 +151,6 @@ export default {
     }
   },
   mounted: function() {
-    this.shared.period = this.$route.params.period;
-
     this.setup_graph();
     this.fetch_data();
 
@@ -158,19 +162,6 @@ export default {
     clearInterval(this.interval);
   }
 }
-
-// function mousemove() {
-//   data = last_6mo_data.concat(first_6mo_data);
-//   var x0 = x.invert(d3.mouse(this)[0]),
-//       i = bisectDate(data, x0, 1),
-//       d0 = data[i - 1],
-//       d1 = data[i],
-//       d = x0 - d0.Date > d1.Date - x0 ? d1 : d0;
-//   focus.attr("transform", "translate(" + x(d.Date) + "," + y(d.Balance) + ")");
-//   focus.select("text").text(formatCurrency(d.Balance));
-// }
-
-// window.addEventListener('resize', render);
 
 </script>
 

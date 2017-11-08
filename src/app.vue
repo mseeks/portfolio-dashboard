@@ -9,9 +9,8 @@
   </header>
   <graph></graph>
   <div id="main">
-    <ul id="activity-feed">
-    </ul>
     <positions></positions>
+    <stats></stats>
   </div>
 </div>
 </template>
@@ -20,6 +19,7 @@
 import graph from './graph.vue'
 import periods from './periods.vue'
 import positions from './positions.vue'
+import stats from './stats.vue'
 import store from './store'
 
 var currency_formatter = new Intl.NumberFormat('en-US', {
@@ -32,7 +32,8 @@ export default {
   components: {
     graph,
     periods,
-    positions
+    positions,
+    stats
   },
   created: function() {
     this.fetch_data();
@@ -77,6 +78,7 @@ export default {
     }
   },
   mounted: function () {
+    this.$router.push({ path: '1m' });
     this.fetch_data();
 
     this.interval = setInterval(function () {
@@ -149,14 +151,5 @@ header {
 
 #main {
   display: flex;
-
-  ul#activity-feed {
-    list-style-type: none;
-    padding: 0;
-    width: 50%;
-
-    li {
-    }
-  }
 }
 </style>

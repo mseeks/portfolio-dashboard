@@ -55,20 +55,21 @@ export default {
 
 <style lang="scss">
 ul#positions {
+  font-size: 0.75em;
   list-style-type: none;
-  padding: 0;
+  margin: 15px 0;
+  padding: 0 15px 0 0;
   width: 50%;
 
   li.headers {
     border-bottom: 1px solid transparentize(#4B515D, 0.75);
     display: flex;
-    font-size: 0.75em;
     margin-bottom: 10px;
     padding-bottom: 10px;
 
     span {
       font-weight: bold;
-      width: 40%;
+      width: 42.5%;
 
       &.gain {
         text-align: right;
@@ -76,7 +77,7 @@ ul#positions {
 
       &.allocation {
         text-align: right;
-        width: 20%;
+        width: 15%;
       }
     }
   }
