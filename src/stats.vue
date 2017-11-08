@@ -55,7 +55,7 @@ export default {
         sign = "+"
       }
 
-      return sign + currency_formatter.format(amount);
+      return sign + amount;
     },
     portfolio_annualized_change_class: function() {
       return {
