@@ -7,7 +7,7 @@
     <span class="label"><span class="period">{{ shared.period }}</span> Annualized</span> <span class="value" v-bind:class="portfolio_annualized_change_class">{{ formatted_portfolio_annualized_change }} ({{ portfolio_percent_change_annualized }}%)</span>
   </div>
   <div class="stat max_drawdown">
-    <span class="label">Max Drawdown</span><span class="value" v-bind:class="max_drawdown_class">{{ formatted_max_drawdown }}%</span>
+    <span class="label">Max Drawdown</span><span class="value">{{ formatted_max_drawdown }}%</span>
   </div>
   <div class="stat gain_to_pain_ratio">
     <span class="label">Gain / Pain Ratio</span><span class="value">{{ gain_to_pain_ratio }}</span>
@@ -62,13 +62,6 @@ export default {
         is_positive: (this.portfolio_percent_change_annualized > 0),
         is_neutral: (this.portfolio_percent_change_annualized == 0),
         is_negative: (this.portfolio_percent_change_annualized < 0)
-      };
-    },
-    max_drawdown_class: function() {
-      return {
-        is_positive: (this.max_drawdown > 0),
-        is_neutral: (this.max_drawdown == 0),
-        is_negative: (this.max_drawdown < 0)
       };
     },
     portfolio_percent_change: function () {
