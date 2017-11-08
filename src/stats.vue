@@ -1,9 +1,6 @@
 <template>
 <div id="stats">
   <div class="stat signal_strategy">
-    <span class="label">Brokerage</span><span class="value">Robinhood</span>
-  </div>
-  <div class="stat signal_strategy">
     <span class="label">Signal Strategy</span><span class="value">MACD 12/26/9</span>
   </div>
   <div class="stat annualized_return">
