@@ -12,6 +12,9 @@
   <div class="stat gain_to_pain_ratio">
     <span class="label">Gain / Pain Ratio</span><span class="value">{{ gain_to_pain_ratio }}</span>
   </div>
+  <div class="stat mean_allocation">
+    <span class="label">Mean Allocation</span><span class="value">{{ mean_allocation }}%</span>
+  </div>
 </div>
 </template>
 
@@ -32,11 +35,25 @@ export default {
   },
   data() {
     return {
-      positions: [],
       shared: store.state
     }
   },
   computed: {
+    mean_allocation: function () {
+      let self = this;
+      let result = 0.0;
+      let share_percentages = this.shared.positions.map(function(position) {
+        console.log(position);
+        return (position.holding_value / self.shared.raw_portfolio_value) * 100;
+      });
+      let sum = share_percentages.reduce(function(accumulator, currentValue) {
+        return accumulator + currentValue;
+      });
+
+      result = sum / share_percentages.length;
+
+      return Math.round(result * 100) / 100;
+    },
     formatted_portfolio_annualized_change: function () {
       let amount = this.portfolio_change_annualized;
       let sign = "";

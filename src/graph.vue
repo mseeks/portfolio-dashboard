@@ -32,7 +32,7 @@ export default {
         this.historicals = response.historicals;
         this.shared.portfolio_historical_values = response.historicals.map(function(x) {
           return x.adjusted_close_equity;
-        });;
+        });
       });
     },
     setup_graph() {

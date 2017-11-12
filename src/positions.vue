@@ -5,7 +5,7 @@
     <span class="gain">Gain / Loss</span>
     <span class="allocation">Share</span>
   </li>
-  <position v-for="position of positions" v-bind:position="position"></position>
+  <position v-for="position of shared.positions" v-bind:position="position"></position>
 </ul>
 </template>
 
@@ -28,7 +28,7 @@ export default {
   },
   data() {
     return {
-      positions: []
+      shared: store.state
     }
   },
   computed: {
@@ -36,7 +36,7 @@ export default {
   methods: {
     fetch_data() {
       $.get('https://apps.msull92.com/data/portfolio/positions', response => {
-        this.positions = response.positions;
+        this.shared.positions = response.positions;
       });
     }
   },
