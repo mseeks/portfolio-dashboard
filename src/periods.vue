@@ -39,6 +39,11 @@ ul#periods {
   padding: 0;
   width: 50%;
 
+  @media (max-width: 576px) {
+    order: 1;
+    width: 100%;
+  }
+
   li {
     align-items: center;
     display: flex;

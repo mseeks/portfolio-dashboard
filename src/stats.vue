@@ -151,6 +151,12 @@ div#stats {
   font-size: 0.75em;
   width: 25%;
 
+  @media (max-width: 576px) {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
   .stat {
     display: flex;
     margin-bottom: 0.75em;

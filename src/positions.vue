@@ -61,6 +61,12 @@ ul#positions {
   padding: 0 15px 0 0;
   width: 50%;
 
+  @media (max-width: 576px) {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
   li.headers {
     border-bottom: 1px solid transparentize(#4B515D, 0.75);
     display: flex;

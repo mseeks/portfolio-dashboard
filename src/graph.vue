@@ -173,6 +173,10 @@ export default {
   text-align: center;
   vertical-align: middle;
   width: 100%;
+
+  @media (max-width: 576px) {
+    overflow: hidden;
+  }
 }
 
 svg {

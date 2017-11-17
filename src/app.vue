@@ -127,8 +127,18 @@ body {
 header {
   display: flex;
 
+  @media (max-width: 576px) {
+    flex-direction: column;
+  }
+
   h1 {
     width: 50%;
+
+    @media (max-width: 576px) {
+      order: 2;
+      text-align: center;
+      width: 100%;
+    }
 
     small {
       font-size: 0.5em;
@@ -151,5 +161,9 @@ header {
 
 #main {
   display: flex;
+
+  @media (max-width: 576px) {
+    flex-direction: column;
+  }
 }
 </style>
