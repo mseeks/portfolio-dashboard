@@ -176,6 +176,7 @@ export default {
 
   @media (max-width: 576px) {
     overflow: hidden;
+    padding: 0 15px;
   }
 }
 

@@ -55,6 +55,7 @@ export default {
 
 <style lang="scss">
 ul#positions {
+  box-sizing: border-box;
   font-size: 0.75em;
   list-style-type: none;
   margin: 15px 0;
@@ -62,8 +63,8 @@ ul#positions {
   width: 50%;
 
   @media (max-width: 576px) {
-    margin: 0;
-    padding: 0;
+    margin: 0 0 25px;
+    padding: 0 15px;
     width: 100%;
   }
 

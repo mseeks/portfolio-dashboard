@@ -112,6 +112,7 @@ export default {
 <style lang="scss">
 body {
   margin: 0;
+  overflow-x: hidden;
 }
 
 #app {
@@ -135,8 +136,9 @@ header {
     width: 50%;
 
     @media (max-width: 576px) {
+      margin: 15px 0;
       order: 2;
-      text-align: center;
+      padding: 0 15px;
       width: 100%;
     }
 

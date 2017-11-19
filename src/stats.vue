@@ -146,6 +146,7 @@ export default {
 <style lang="scss">
 
 div#stats {
+  box-sizing: border-box;
   margin: 15px 0;
   padding: 0 0 0 15px;
   font-size: 0.75em;
@@ -153,7 +154,7 @@ div#stats {
 
   @media (max-width: 576px) {
     margin: 0;
-    padding: 0;
+    padding: 0 15px;
     width: 100%;
   }
 
