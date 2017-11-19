@@ -43,7 +43,6 @@ export default {
       let self = this;
       let result = 0.0;
       let share_percentages = this.shared.positions.map(function(position) {
-        console.log(position);
         return (position.holding_value / self.shared.raw_portfolio_value) * 100;
       });
       let sum = share_percentages.reduce(function(accumulator, currentValue) {

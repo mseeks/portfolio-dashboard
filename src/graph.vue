@@ -21,6 +21,7 @@ export default {
   data() {
     return {
       historicals: [],
+      interval: null,
       shared: store.state,
       raw_portfolio_change: 0.0
     }

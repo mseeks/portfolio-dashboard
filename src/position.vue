@@ -1,27 +1,33 @@
 <template>
 <li>
-  <div class="context">
-    <span class="symbol">
-      {{ position.symbol }}
-      <small>{{ position.name }}</small>
-    </span>
+  <div class="shelf" v-bind:class="{ selected: is_selected, cash: !not_cash }" v-on:click="toggle_selected">
+    <div class="context">
+      <span class="symbol">
+        {{ position.symbol }}
+        <small>{{ position.name }}</small>
+      </span>
+    </div>
+    <div class="holding">
+      <span class="holding_value">
+        {{ formatted_holding_value }}
+        <small class="holding_change" v-bind:class="position_change_class">{{ formatted_holding_change }} ({{ formatted_holding_percent_change }}%)</small>
+      </span>
+    </div>
+    <div class="quantity">
+      {{ percent_allocation }}%
+      <small v-bind:class="percent_allocation_class">
+        <span v-for="n in simple_percent_allocation">◼︎</span>
+      </small>
+    </div>
   </div>
-  <div class="holding">
-    <span class="holding_value">
-      {{ formatted_holding_value }}
-      <small class="holding_change" v-bind:class="position_change_class">{{ formatted_holding_change }} ({{ formatted_holding_percent_change }}%)</small>
-    </span>
-  </div>
-  <div class="quantity">
-    {{ percent_allocation }}%
-    <small v-bind:class="percent_allocation_class">
-      <span v-for="n in simple_percent_allocation">◼︎</span>
-    </small>
+  <div class="drawer" v-bind:class="{ expanded: is_selected }">
+    <signal v-bind:position="position" v-bind:active="is_selected" v-if="not_cash"></signal>
   </div>
 </li>
 </template>
 
 <script>
+import signal from './signal.vue'
 import store from './store'
 
 var currency_formatter = new Intl.NumberFormat('en-US', {
@@ -34,8 +40,12 @@ export default {
   data() {
     return {
       holding_value: 0.0,
+      is_selected: false,
       shared: store.state
     };
+  },
+  components: {
+    signal
   },
   computed: {
     formatted_holding_change() {
@@ -67,6 +77,15 @@ export default {
     quantity() {
       return Math.round(this.position.quantity);
     },
+    not_cash() {
+      let result = true;
+
+      if (this.position.symbol == "CASH") {
+        result = false;
+      }
+
+      return result;
+    },
     percent_allocation() {
       let result = (this.holding_value / this.shared.raw_portfolio_value) * 100;
       return Math.round(result * 100) / 100;
@@ -86,6 +105,11 @@ export default {
         is_medium: (this.simple_percent_allocation <= 3 && this.simple_percent_allocation > 2 ),
         is_low: (this.simple_percent_allocation <= 2)
       };
+    }
+  },
+  methods: {
+    toggle_selected() {
+      this.is_selected = !this.is_selected;
     }
   },
   watch: {
@@ -112,52 +136,77 @@ export default {
 
 <style lang="scss">
 ul#positions li {
-  align-items: center;
-  display: flex;
   margin-bottom: 10px;
 
-  .context,
-  .holding {
-    width: 42.5%;
-  }
+  .shelf {
+    align-items: center;
+    display: flex;
+    transition: all 0.25s ease;
 
-  .quantity {
-    width: 15%;
-  }
+    &:not(.cash) {
+      &:hover {
+        padding: 0 0 5px 0;
+      }
 
-  .context {
-    small {
-      display: block;
-      opacity: 0.75;
+      &.selected {
+        padding: 0 0 5px 0;
+      }
+    }
+
+    .context,
+    .holding {
+      width: 42.5%;
+    }
+
+    .quantity {
+      width: 15%;
+    }
+
+    .context {
+      small {
+        display: block;
+        opacity: 0.75;
+      }
+    }
+
+    .quantity {
+      text-align: right;
+
+      small {
+        display: block;
+        transition: color 0.25s;
+
+        &.is_low {
+          color: #98c379;
+        }
+
+        &.is_medium {
+          color: #e5c07b;
+        }
+
+        &.is_high {
+          color: #e05252;
+        }
+      }
+    }
+
+    .holding {
+      text-align: right;
+
+      small {
+        display: block;
+      }
     }
   }
 
-  .quantity {
-    text-align: right;
+  .drawer {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.25s ease;
 
-    small {
-      display: block;
-      transition: color 0.25s;
-
-      &.is_low {
-        color: #98c379;
-      }
-
-      &.is_medium {
-        color: #e5c07b;
-      }
-
-      &.is_high {
-        color: #e05252;
-      }
-    }
-  }
-
-  .holding {
-    text-align: right;
-
-    small {
-      display: block;
+    &.expanded {
+      padding: 0;
+      max-height: initial;
     }
   }
 }

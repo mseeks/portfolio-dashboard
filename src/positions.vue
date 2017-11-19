@@ -28,6 +28,7 @@ export default {
   },
   data() {
     return {
+      interval: null,
       shared: store.state
     }
   },
