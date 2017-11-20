@@ -7,6 +7,9 @@
         <small>{{ position.name }}</small>
       </span>
     </div>
+    <div class="signal_preview"  v-bind:class="{ selected: is_selected }">
+      <microsignal v-bind:position="position" v-bind:active="is_selected" v-if="not_cash"></microsignal>
+    </div>
     <div class="holding">
       <span class="holding_value">
         {{ formatted_holding_value }}
@@ -27,6 +30,7 @@
 </template>
 
 <script>
+import microsignal from './microsignal.vue'
 import signal from './signal.vue'
 import store from './store'
 
@@ -45,6 +49,7 @@ export default {
     };
   },
   components: {
+    microsignal,
     signal
   },
   computed: {
@@ -141,7 +146,7 @@ ul#positions li {
   .shelf {
     align-items: center;
     display: flex;
-    transition: all 0.25s ease;
+    transition: padding 0.25s ease;
 
     &:not(.cash) {
       &:hover {
@@ -153,13 +158,40 @@ ul#positions li {
       }
     }
 
-    .context,
-    .holding {
-      width: 42.5%;
+    .context {
+      width: 45%;
+    }
+
+    .signal_preview {
+      opacity: 0.75;
     }
 
     .quantity {
+      transition: opacity 0.25s ease;
       width: 15%;
+
+      &.selected {
+        opacity: 0;
+      }
+    }
+
+    .signal_preview {
+      transition: opacity 0.25s ease;
+      width: 10%;
+
+      &.selected {
+        opacity: 0;
+      }
+    }
+
+    &:not(.cash) {
+      &:hover:not(.selected) .signal_preview {
+        opacity: 1;
+      }
+    }
+
+    .holding {
+      width: 30%;
     }
 
     .context {
@@ -206,7 +238,7 @@ ul#positions li {
 
     &.expanded {
       padding: 0;
-      max-height: initial;
+      max-height: 105px;
     }
   }
 }

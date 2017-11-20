@@ -2,6 +2,7 @@
 <ul id="positions">
   <li class="headers">
     <span class="stock">Stock</span>
+    <span class="signal_preview"></span>
     <span class="gain">Gain / Loss</span>
     <span class="allocation">Share</span>
   </li>
@@ -72,15 +73,25 @@ ul#positions {
 
     span {
       font-weight: bold;
-      width: 42.5%;
-
-      &.gain {
-        text-align: right;
-      }
+      width: 45%;
 
       &.allocation {
         text-align: right;
         width: 15%;
+      }
+
+      &.signal_preview {
+        text-align: right;
+        width: 10%;
+      }
+
+      &.signal_preview {
+        text-align: center;
+      }
+
+      &.gain {
+        text-align: right;
+        width: 35%;
       }
     }
   }

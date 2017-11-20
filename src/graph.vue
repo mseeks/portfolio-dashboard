@@ -154,7 +154,6 @@ export default {
     this.fetch_data();
   }
 }
-
 </script>
 
 <style lang="scss">

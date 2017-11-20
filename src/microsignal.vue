@@ -1,6 +1,6 @@
 <template>
-<div class="signal" v-bind:class="signal_unique_class">
-  <div class="signal_graph" v-bind:class="signal_unique_class">
+<div class="micro_signal" v-bind:class="signal_unique_class">
+  <div class="micro_signal_graph" v-bind:class="signal_unique_class">
   </div>
 </div>
 </template>
@@ -9,7 +9,7 @@
 import store from './store'
 
 export default {
-  name: 'signal',
+  name: 'microsignal',
   computed: {
     signal_unique_class() {
       let result = {};
@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     setup_graph() {
-      let svg = d3.select('.signal_graph.' + this.position.symbol).append('svg');
+      let svg = d3.select('.micro_signal_graph.' + this.position.symbol).append('svg');
       let chartWrapper = svg.append('g');
       let macd_path = chartWrapper.append('path').classed('path macd', true);
       let signal_path = chartWrapper.append('path').classed('path signal', true);
@@ -38,13 +38,13 @@ export default {
 
       let margin = {};
 
-      margin.top = 15;
-      margin.right = 20;
+      margin.top = 0;
+      margin.right = 0;
       margin.left = 0;
-      margin.bottom = 15;
+      margin.bottom = 0;
 
-      let width = $('.signal_graph.' + this.position.symbol).width() - margin.left - margin.right;
-      let height = 100 - margin.top - margin.bottom;
+      let width = $('.micro_signal_graph.' + this.position.symbol).width() - margin.left - margin.right;
+      let height = 15 - margin.top - margin.bottom;
 
       svg.attr("class", "graph")
          .attr('width', width + margin.right + margin.left)
@@ -54,7 +54,7 @@ export default {
     fetch_data() {
       let self = this;
 
-      $.get('https://apps.msull92.com/data/portfolio/positions/' + this.position.symbol + '/signals/' + this.shared.period, response => {
+      $.get('https://apps.msull92.com/data/portfolio/positions/' + this.position.symbol + '/signals/1d', response => {
         this.macd = response.signals.map(function(macd) {
           return {
             begins_at: d3.time.format.utc("%Y-%m-%d").parse(macd.begins_at),
@@ -86,25 +86,25 @@ export default {
       let y = d3.scale.linear().domain(yExtent);
 
       //the path generator for the line chart
-      let line = d3.svg.line()
+      let line = d3.svg.line().interpolate("basis")
         .x(function(d) { return x(d.begins_at) })
         .y(function(d) { return y(d.value) });
 
       //initialize svg
-      let svg = d3.select('.signal_graph.' + this.position.symbol).select('svg');
+      let svg = d3.select('.micro_signal_graph.' + this.position.symbol).select('svg');
       let chartWrapper = svg.select('g');
       let macd_path = chartWrapper.select('path.macd').datum(macd_data);
       let signal_path = chartWrapper.select('path.signal').datum(signal_data);
 
       let margin = {};
 
-      margin.top = 15;
-      margin.right = 20;
+      margin.top = 0;
+      margin.right = 0;
       margin.left = 0;
-      margin.bottom = 15;
+      margin.bottom = 0;
 
-      let width = $('.signal_graph.' + this.position.symbol).width() - margin.left - margin.right;
-      let height = 100 - margin.top - margin.bottom;
+      let width = $('.micro_signal_graph.' + this.position.symbol).width() - margin.left - margin.right;
+      let height = 15 - margin.top - margin.bottom;
 
       //initialize axis
       let xAxis = d3.svg.axis().orient('bottom').ticks(4);
@@ -119,15 +119,6 @@ export default {
       xAxis.scale(x);
       yAxis.scale(y);
 
-      svg.select('.x.axis')
-        .attr('transform', 'translate(0,' + height + ')')
-        .transition()
-        .call(xAxis);
-
-      svg.select('.y.axis')
-         .transition()
-         .call(yAxis);
-
       macd_path.transition().attr('d', line);
       signal_path.transition().attr('d', line);
     }
@@ -140,17 +131,12 @@ export default {
   watch: {
     signal: "render",
     active() {
-      if (this.active) {
+      if (!this.active) {
         this.fetch_data();
       }
     },
     'shared.heartbeat' () {
-      if (this.active) {
-        this.fetch_data();
-      }
-    },
-    'shared.period' () {
-      if (this.active) {
+      if (!this.active) {
         this.fetch_data();
       }
     }
@@ -159,7 +145,7 @@ export default {
 </script>
 
 <style lang="scss">
-.signal {
+.micro_signal {
   box-sizing: border-box;
   display: block;
   font-family: "Fira Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -172,7 +158,7 @@ export default {
   }
 
   svg {
-    margin-right: -50px;
+    margin-right: 0;
   }
 
   svg {
@@ -197,7 +183,7 @@ export default {
     fill: none;
   }
 
-  .signal_graph {
+  .micro_signal_graph {
     .graph path.path.macd {
       stroke: #69C2CC;
     }
