@@ -44,7 +44,7 @@ export default {
 
       let margin = {};
 
-      margin.top = 30;
+      margin.top = 15;
       margin.right = 20;
       margin.left = 0;
       margin.bottom = 50;
@@ -91,7 +91,7 @@ export default {
 
       let margin = {};
 
-      margin.top = 30;
+      margin.top = 15;
       margin.right = 20;
       margin.left = 0;
       margin.bottom = 50;

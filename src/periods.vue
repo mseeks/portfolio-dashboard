@@ -47,6 +47,7 @@ ul#periods {
   width: 50%;
 
   @media (max-width: 576px) {
+    margin-bottom: 0;
     order: 1;
     width: 100%;
   }
