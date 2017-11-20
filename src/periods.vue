@@ -27,6 +27,13 @@ export default {
         is_negative: (this.shared.raw_portfolio_change < 0)
       };
     }
+  },
+  watch: {
+    '$route' (to, from) {
+      if (to.params.period != null) {
+        this.shared.period = to.params.period;
+      }
+    },
   }
 }
 </script>

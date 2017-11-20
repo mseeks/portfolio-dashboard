@@ -135,19 +135,25 @@ export default {
   mounted: function() {
     this.setup_graph();
     this.fetch_data();
-
-    this.interval = setInterval(function () {
-      if (this.active) {
-        this.fetch_data();
-      }
-    }.bind(this), 10000);
   },
   props: ['active', 'position'],
   watch: {
-    '$route' (to, from) {
-      this.fetch_data();
+    signal: "render",
+    active() {
+      if (this.active) {
+        this.fetch_data();
+      }
     },
-    signal: "render"
+    'shared.heartbeat' () {
+      if (this.active) {
+        this.fetch_data();
+      }
+    },
+    'shared.period' () {
+      if (this.active) {
+        this.fetch_data();
+      }
+    }
   }
 }
 </script>
@@ -163,7 +169,6 @@ export default {
 
   @media (max-width: 576px) {
     overflow: hidden;
-    padding: 0 15px;
   }
 
   svg {

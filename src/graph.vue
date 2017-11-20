@@ -21,7 +21,6 @@ export default {
   data() {
     return {
       historicals: [],
-      interval: null,
       shared: store.state,
       raw_portfolio_change: 0.0
     }
@@ -127,11 +126,7 @@ export default {
   },
   watch: {
     historicals: "render",
-    '$route' (to, from) {
-      if (to.params.period != null) {
-        this.shared.period = to.params.period;
-      }
-
+    'shared.period' () {
       this.fetch_data();
     },
     raw_portfolio_change: function(newValue, oldValue) {
@@ -149,18 +144,14 @@ export default {
         })
         .start()
       animate()
+    },
+    'shared.heartbeat' () {
+      this.fetch_data();
     }
   },
   mounted: function() {
     this.setup_graph();
     this.fetch_data();
-
-    this.interval = setInterval(function () {
-      this.fetch_data();
-    }.bind(this), 10000);
-  },
-  beforeDestroy: function() {
-    clearInterval(this.interval);
   }
 }
 

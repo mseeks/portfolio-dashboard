@@ -40,6 +40,7 @@ export default {
   },
   data() {
     return {
+      interval: null,
       raw_portfolio_value: 0.0,
       shared: store.state
     }
@@ -75,6 +76,9 @@ export default {
       $.get('https://apps.msull92.com/data/portfolio/portfolio', response => {
         this.raw_portfolio_value = response.portfolio_value;
       });
+    },
+    heartbeat() {
+      this.shared.heartbeat++;
     }
   },
   mounted: function () {
@@ -82,7 +86,7 @@ export default {
     this.fetch_data();
 
     this.interval = setInterval(function () {
-      this.fetch_data();
+      this.heartbeat();
     }.bind(this), 10000);
   },
   beforeDestroy: function(){
@@ -105,6 +109,9 @@ export default {
         .start()
       animate()
     }
+  },
+  'shared.heartbeat' () {
+    this.fetch_data();
   }
 }
 </script>

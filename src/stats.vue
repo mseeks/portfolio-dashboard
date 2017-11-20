@@ -29,10 +29,6 @@ var currency_formatter = new Intl.NumberFormat('en-US', {
 
 export default {
   name: 'stats',
-  components: {
-  },
-  created() {
-  },
   data() {
     return {
       shared: store.state
@@ -136,8 +132,6 @@ export default {
 
       return Math.round(result * 100) / 100;
     }
-  },
-  methods: {
   }
 }
 </script>

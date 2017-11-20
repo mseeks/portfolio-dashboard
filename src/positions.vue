@@ -28,11 +28,8 @@ export default {
   },
   data() {
     return {
-      interval: null,
       shared: store.state
     }
-  },
-  computed: {
   },
   methods: {
     fetch_data() {
@@ -43,13 +40,11 @@ export default {
   },
   mounted: function () {
     this.fetch_data();
-
-    this.interval = setInterval(function () {
-      this.fetch_data();
-    }.bind(this), 10000);
   },
-  beforeDestroy: function(){
-    clearInterval(this.interval);
+  watch: {
+    'shared.heartbeat' () {
+      this.fetch_data();
+    }
   }
 }
 </script>
