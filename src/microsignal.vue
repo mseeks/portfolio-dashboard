@@ -57,14 +57,14 @@ export default {
       $.get('https://apps.msull92.com/data/portfolio/positions/' + this.position.symbol + '/signals/1d', response => {
         this.macd = response.signals.map(function(macd) {
           return {
-            begins_at: d3.time.format.utc("%Y-%m-%d").parse(macd.begins_at),
+            begins_at: d3.time.format.iso.parse(macd.begins_at),
             value: parseFloat(macd.macd)
           };
         });
 
         this.signal = response.signals.map(function(signal) {
           return {
-            begins_at: d3.time.format.utc("%Y-%m-%d").parse(signal.begins_at),
+            begins_at: d3.time.format.iso.parse(signal.begins_at),
             value: parseFloat(signal.macd_signal)
           };
         });
@@ -72,7 +72,7 @@ export default {
     },
     render() {
       // Parse the date / time
-      let	parseDate = d3.time.format("%Y-%m-%d").parse,
+      let	parseDate = d3.time.format.iso.parse,
           formatValue = d3.format(".2f");
 
       let macd_data = this.macd;

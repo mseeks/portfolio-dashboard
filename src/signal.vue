@@ -23,6 +23,7 @@ export default {
     return {
       interval: null,
       macd: [],
+      orders: [],
       signal: [],
       shared: store.state
     };
@@ -51,32 +52,37 @@ export default {
          .attr('height', height + margin.top + margin.bottom);
       chartWrapper.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
     },
-    fetch_data() {
+    fetch_signal() {
       let self = this;
 
       $.get('https://apps.msull92.com/data/portfolio/positions/' + this.position.symbol + '/signals/' + this.shared.period, response => {
         this.macd = response.signals.map(function(macd) {
           return {
-            begins_at: d3.time.format.utc("%Y-%m-%d").parse(macd.begins_at),
+            begins_at: d3.time.format.iso.parse(macd.begins_at),
             value: parseFloat(macd.macd)
           };
         });
 
         this.signal = response.signals.map(function(signal) {
           return {
-            begins_at: d3.time.format.utc("%Y-%m-%d").parse(signal.begins_at),
+            begins_at: d3.time.format.iso.parse(signal.begins_at),
             value: parseFloat(signal.macd_signal)
           };
         });
+
+        $.get('https://apps.msull92.com/data/portfolio/positions/' + this.position.symbol + '/orders/' + this.shared.period, response => {
+          this.orders = response.orders;
+        });
       });
     },
-    render() {
+    render_signal() {
       // Parse the date / time
-      let	parseDate = d3.time.format("%Y-%m-%d").parse,
+      let	parseDate = d3.time.format.iso.parse,
           formatValue = d3.format(".2f");
 
       let macd_data = this.macd;
       let signal_data = this.signal;
+      let order_data = this.orders;
 
       //initialize scales
       let xExtent = d3.extent(macd_data.concat(signal_data), function(d,i) { return d.begins_at });
@@ -130,28 +136,41 @@ export default {
 
       macd_path.transition().attr('d', line);
       signal_path.transition().attr('d', line);
+
+      chartWrapper.selectAll('.order_line').remove();
+
+      order_data.forEach(function(order) {
+        chartWrapper.append('line')
+          .attr({
+              'x1': x(parseDate(order.execution_time)),
+              'y1': 0,
+              'x2': x(parseDate(order.execution_time)),
+              'y2': height
+          })
+          .attr('class', "order_line" + " " + order.type + " " + order.state);
+      });
     }
   },
   mounted: function() {
     this.setup_graph();
-    this.fetch_data();
+    this.fetch_signal();
   },
   props: ['active', 'position'],
   watch: {
-    signal: "render",
+    orders: "render_signal",
     active() {
       if (this.active) {
-        this.fetch_data();
+        this.fetch_signal();
       }
     },
     'shared.heartbeat' () {
       if (this.active) {
-        this.fetch_data();
+        this.fetch_signal();
       }
     },
     'shared.period' () {
       if (this.active) {
-        this.fetch_data();
+        this.fetch_signal();
       }
     }
   }
@@ -204,6 +223,19 @@ export default {
 
     .graph path.path.signal {
       stroke: #c678dd;
+    }
+
+    .graph line.order_line.filled {
+      opacity: 0.25;
+      stroke-width: 1px;
+
+      &.buy {
+        stroke: #69C2CC;
+      }
+
+      &.sell {
+        stroke: #c678dd;
+      }
     }
   }
 
