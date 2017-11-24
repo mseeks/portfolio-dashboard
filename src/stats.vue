@@ -146,7 +146,8 @@ div#stats {
   width: 25%;
 
   @media (max-width: 576px) {
-    margin: 0;
+    margin: 0 0 25px;
+    order: 1;
     padding: 0 15px;
     width: 100%;
   }

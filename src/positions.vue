@@ -60,7 +60,8 @@ ul#positions {
   width: 50%;
 
   @media (max-width: 576px) {
-    margin: 0 0 25px;
+    margin: 0 0 10px;
+    order: 2;
     padding: 0 15px;
     width: 100%;
   }
