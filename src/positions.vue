@@ -24,9 +24,6 @@ export default {
   components: {
     position
   },
-  created() {
-    this.fetch_data();
-  },
   data() {
     return {
       shared: store.state
@@ -41,11 +38,6 @@ export default {
   },
   mounted: function () {
     this.fetch_data();
-  },
-  watch: {
-    'shared.heartbeat' () {
-      this.fetch_data();
-    }
   }
 }
 </script>

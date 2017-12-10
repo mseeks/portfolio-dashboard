@@ -22,7 +22,9 @@ import positions from './positions.vue'
 import stats from './stats.vue'
 import store from './store'
 
-var currency_formatter = new Intl.NumberFormat('en-US', {
+let socket = io('https://apps.msull92.com', { path: '/portfolio-emitter/socket.io/' });
+
+let currency_formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
 });
@@ -34,9 +36,6 @@ export default {
     periods,
     positions,
     stats
-  },
-  created: function() {
-    this.fetch_data();
   },
   data() {
     return {
@@ -109,11 +108,20 @@ export default {
         .start()
       animate()
     }
-  },
-  'shared.heartbeat' () {
-    this.fetch_data();
   }
 }
+
+socket.on('portfolio-stats', function (data) {
+  data = JSON.parse(data)
+
+  store.state.raw_portfolio_value = data.portfolio_value
+});
+
+socket.on('portfolio-positions', function (data) {
+  data = JSON.parse(data)
+
+  store.state.positions = data.positions
+});
 </script>
 
 <style lang="scss">

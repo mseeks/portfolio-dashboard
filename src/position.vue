@@ -43,7 +43,6 @@ export default {
   name: 'position',
   data() {
     return {
-      holding_value: 0.0,
       is_selected: false,
       shared: store.state
     };
@@ -53,8 +52,17 @@ export default {
     signal
   },
   computed: {
+    holding_value() {
+      return this.position.current_quote * this.position.quantity;
+    },
+    cost_basis() {
+      return this.position.average_buy_price * this.position.quantity;
+    },
+    holding_change() {
+      return this.holding_value - this.cost_basis;
+    },
     formatted_holding_change() {
-      let change = this.position.holding_change;
+      let change = this.holding_change;
       let sign = "";
 
       if (change > 0) {
@@ -64,7 +72,7 @@ export default {
       return sign + currency_formatter.format(change);
     },
     formatted_holding_percent_change() {
-      let result = (this.position.holding_change / this.position.cost_basis) * 100;
+      let result = (this.holding_change / this.cost_basis) * 100;
       return Math.round(result * 100) / 100;
     },
     formatted_holding_value() {
@@ -74,9 +82,9 @@ export default {
     },
     position_change_class() {
       return {
-        is_positive: (this.position.holding_change > 0),
-        is_neutral: (this.position.holding_change == 0),
-        is_negative: (this.position.holding_change < 0)
+        is_positive: (this.holding_change > 0),
+        is_neutral: (this.holding_change == 0),
+        is_negative: (this.holding_change < 0)
       };
     },
     quantity() {
@@ -115,24 +123,6 @@ export default {
   methods: {
     toggle_selected() {
       this.is_selected = !this.is_selected;
-    }
-  },
-  watch: {
-    position: function(newValue, oldValue) {
-      var vm = this
-      function animate () {
-        if (TWEEN.update()) {
-          requestAnimationFrame(animate)
-        }
-      }
-      new TWEEN.Tween({ tweeningNumber: oldValue.holding_value })
-        .easing(TWEEN.Easing.Quadratic.Out)
-        .to({ tweeningNumber: newValue.holding_value }, 250)
-        .onUpdate(function () {
-          vm.holding_value = this.tweeningNumber
-        })
-        .start()
-      animate()
     }
   },
   props: ['position']
