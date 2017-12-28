@@ -87,9 +87,28 @@ export default {
     this.interval = setInterval(function () {
       this.heartbeat();
     }.bind(this), 10000);
+
+    let self = this;
+
+    socket.on('portfolio-stats', function (data) {
+      data = JSON.parse(data)
+
+      console.log(data)
+
+      self.shared.raw_portfolio_value = data.portfolio_value
+    });
+
+    socket.on('portfolio-positions', function (data) {
+      data = JSON.parse(data)
+
+      console.log(data)
+
+      self.shared.positions = data.positions
+    });
   },
   beforeDestroy: function(){
     clearInterval(this.interval);
+    socket.close();
   },
   watch: {
     raw_portfolio_value: function(newValue, oldValue) {
@@ -110,18 +129,6 @@ export default {
     }
   }
 }
-
-socket.on('portfolio-stats', function (data) {
-  data = JSON.parse(data)
-
-  store.state.raw_portfolio_value = data.portfolio_value
-});
-
-socket.on('portfolio-positions', function (data) {
-  data = JSON.parse(data)
-
-  store.state.positions = data.positions
-});
 </script>
 
 <style lang="scss">

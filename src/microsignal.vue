@@ -134,11 +134,6 @@ export default {
       if (!this.active) {
         this.fetch_data();
       }
-    },
-    'shared.heartbeat' () {
-      if (!this.active) {
-        this.fetch_data();
-      }
     }
   }
 }

@@ -163,11 +163,6 @@ export default {
         this.fetch_signal();
       }
     },
-    'shared.heartbeat' () {
-      if (this.active) {
-        this.fetch_signal();
-      }
-    },
     'shared.period' () {
       if (this.active) {
         this.fetch_signal();

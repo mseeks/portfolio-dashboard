@@ -144,9 +144,6 @@ export default {
         })
         .start()
       animate()
-    },
-    'shared.heartbeat' () {
-      this.fetch_data();
     }
   },
   mounted: function() {
